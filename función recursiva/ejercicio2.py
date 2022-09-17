@@ -10,40 +10,43 @@
 #-------------------------------------------------------------------------------
 
 def main():
-    diccionarios=[]
-    diccionario= {}
-    stock=[]
-    montototal=[]
+    diccionarios= {}
+    totales = {
+        'stock': 0,
+        'monto': 0
+    }
 
-    def pedirdatos():
+    def pedirdatos(diccionarios):
         isbn = input("Ingrese un ISBN")
         if(isbn != "0"):
-            diccionario['isbn']= isbn
-            diccionario['NombredelLibro']=input("Ingrese el nombre del libro")
-            diccionario['Stock']=int(input("Ingrese el stock"))
-            stock.append(diccionario['Stock'])
-            diccionario['Precio']=int(input("Ingrese el precio del libro"))
-            montototal.append(diccionario['Precio']*diccionario['Stock'])
-            diccionarios.append(diccionario)
-            pedirdatos()
+
+            libro = input("Ingrese el nombre del libro")
+            stock = int(input("Ingrese el stock"))
+            precio = int(input("Ingrese el precio del libro"))
+
+            diccionario = {
+                'isbn': isbn,
+                'NombredelLibro': libro,
+                'Stock': stock,
+                'Precio': precio
+            }
+
+            totales['stock'] += stock
+            totales['monto'] += precio * stock
+
+            diccionarios[isbn] = diccionario
+            pedirdatos(diccionarios)
 
         else:
             return
 
-    pedirdatos()
-    print(stock)
+    pedirdatos(diccionarios)
 
-    if (diccionario != {}):
+    if (diccionarios != {}):
         print(diccionarios)
-        acumstock=0
-        for i in stock:
-            acumstock += i
-        acumtotal=0
-        for i in montototal:
-            acumtotal += i
-        print("La cantidad total de libros es ", acumstock)
-        print("El monto total de los libros es ", acumtotal)
-        print("El valor promedio de los libros es ", acumtotal/acumstock)
+        print("La cantidad total de libros es ", totales['stock'])
+        print("El monto total de los libros es ", totales['monto'])
+        print("El valor promedio de los libros es ", totales['monto']/totales['stock'])
 
 if __name__ == '__main__':
     main()
