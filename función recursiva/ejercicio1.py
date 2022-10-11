@@ -21,6 +21,7 @@ def main():
             ventas = int(input("Ingrese cantidad de ventas"))
             totalventa = int(input("Ingrese ventas total de la sucursal"))
             promedio = totalventa/ventas
+
             lista.append(id)
             lista.append(nombre)
             lista.append(ventas)
@@ -36,7 +37,9 @@ def main():
         print("Su lista es", lista)
 
     pedirdatos(lista)
+
     if (lista != []):
+
         imprimirdatos(lista)
         print("Sus promedios son", promedios)
         contador = 0
