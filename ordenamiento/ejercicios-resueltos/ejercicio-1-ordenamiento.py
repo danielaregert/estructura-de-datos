@@ -8,18 +8,13 @@
 ##        d) Deberá indicar nombre y tiempo del método más rápido
 ##        e) Deberá indicar nombre y cantidad del método que realiza menos comparaciones
 
-import random
-import time
-
-
-#random.randint(0, 100)
-#time.time()
-#CREO LAS LISTAS
 
 cien =[]
 mil =[]
 diezmil =[]
 
+import random
+import time
 
 for i in range(100):
     aux=random.randint(0,1000)
@@ -35,8 +30,6 @@ for i in range(10000):
     diezmil.append(aux)
 
 
-#BURBUJA
-
 def burbuja(lista) :
     """Método de ordenamiento burbuja"""
     for i in range(0, len(lista)-1) :
@@ -45,39 +38,100 @@ def burbuja(lista) :
                 lista[j], lista[j+1] = lista[j+1], lista[j]
 
 
-#PRUEBA con lista de CIEN ELEMENTOS
-print("Inicio método burbuja con cien elementos")
-tiempoinicial=time.time()
+def seleccion(lista) :
+    """Método de ordenamiento selección"""
+    for i in range(0, len(lista)-1) :
+        minimo = i
+        for j in range(i+1, len(lista)) :
+            if (lista[j] < lista[minimo]) :
+                minimo = j
 
-burbuja(cien)
+        lista[i], lista[minimo] = lista[minimo], lista[i]
 
-print(cien[99]) #me imprimo un ultimo valor para verificar q los orden{o
 
-tiempofinal=time.time()
+def insercion(lista) :
+    """Método de ordenamiento inserción"""
+    for i in range(1, len(lista)+1) :
+        k = i-1
+        while (k > 0) and (lista[k] < lista[k-1]) :
+            lista[k], lista[k-1] = lista[k-1], lista[k]
+            k -= 1
 
-print(f'El tiempo inicial fue {tiempoinicial} y el final fue {tiempofinal}')
-print("La diferencia con cien elementos es de", tiempofinal-tiempoinicial)
 
-#PRUEBA con lista de MIL ELEMENTOS
-print("Inicio método burbuja con mil elementos")
-tiempoinicial=time.time()
+def quicksort(lista, primero, ultimo) :
+    """Metodo de ordenamiento quicksort"""
+    izquierda = primero
+    derecha = ultimo - 1
+    pivote = ultimo
 
-burbuja(mil)
-print(diezmil[999])
+    while (izquierda < derecha) :
+        while (lista[izquierda] < lista[pivote]) and (izquierda <= derecha) :
+            izquierda += 1
 
-tiempofinal=time.time()
+        while (lista[derecha] > lista[pivote]) and (derecha >= izquierda) :
+            derecha -= 1
 
-print(f'El tiempo inicial fue {tiempoinicial} y el final fue {tiempofinal}')
-print("La diferencia con mil elementos es de", tiempofinal-tiempoinicial)
+        if (izquierda < derecha) :
+            lista[izquierda], lista[derecha] = lista[derecha], lista[izquierda]
 
-#DIEZMIL MIL ELEMENTOS
-print("Inicio método burbuja con cienmil elementos")
-tiempoinicial=time.time()
+    if (lista[pivote] < lista[izquierda]) :
+        lista[izquierda], lista[pivote] = lista[pivote], lista[izquierda]
 
-burbuja(diezmil)
-print(diezmil[9999])
+    if (primero < izquierda) :
+        quicksort(lista, primero, izquierda-1)
 
-tiempofinal=time.time()
+    if (ultimo > izquierda) :
+        quicksort(lista, izquierda+1, ultimo)
 
-print(f'El tiempo inicial fue {tiempoinicial} y el final fue {tiempofinal}')
-print("La diferencia con diez mil elementos es de", tiempofinal-tiempoinicial)
+def mergesort(lista) :
+    """Metodo de ordenamiento mergesort"""
+    if (len(lista) <= 1) :
+        return lista
+    else :
+        medio = len(lista) // 2
+        izquierda = []
+
+        for i in range(0, medio) :
+            izquierda.append(lista[i])
+
+        derecha = []
+
+        for i in range(medio, len(lista)) :
+            derecha.append(lista[i])
+
+        izquierda = mergesort(izquierda)
+        derecha = mergesort(derecha)
+
+        if (izquierda[medio-1] <= derecha[0]) :
+            izquierda += derecha
+
+            return izquierda
+
+        resultado = merge(izquierda, derecha)
+
+        return resultado
+
+def contarTiempo(funcion, lista):
+    tiempoinicial=time.time()
+    funcion(lista)
+    tiempofinal=time.time()
+    diferencia=tiempofinal-tiempoinicial
+    return diferencia
+
+def crearTotales(funcion):
+    tiempofuncion={}
+    tiempo=contarTiempo(funcion, cien)
+    tiempofuncion['cien']=tiempo
+    tiempo=contarTiempo(funcion, mil)
+    tiempofuncion['mil']=tiempo
+    tiempo=contarTiempo(funcion, diezmil)
+    tiempofuncion['diezmil']=tiempo
+    return tiempofuncion
+
+totales={}
+totales['Burbuja']=crearTotales(burbuja)
+totales['Seleccion']=crearTotales(seleccion)
+totales['Insercion']=crearTotales(insercion)
+totales['Mezcla']=crearTotales(mergesort)
+print(totales)
+
