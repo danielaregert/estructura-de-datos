@@ -53,7 +53,7 @@ class Cola(object) :
         if self.frente is not None :
             return self.frente.info
 
-    def tamanio(self) :
+    def que_tamanio(self) :
         """Devuelve el nro de elementos en la cola"""
         return self.tamanio
 
@@ -65,24 +65,20 @@ class Cola(object) :
         return dato
 
 
-cdatos = Cola()
-cvocales = Cola()
 
-letra = input('Ingrese un caracter: ')
+lista=[1,2,3,4]
 
-while (letra != '') :
-    cdatos.arribo(letra)
-    letra = input('Ingrese un caracter: ')
+miCola=Cola()
+miCola2=Cola()
 
-while (not cdatos.cola_vacia()) :
-    letra = cdatos.atencion()
-    if (letra.upper() in ['A', 'E', 'I', 'O', 'U']) :
-        cvocales.arribo(letra)
+for nro in lista:
+    miCola.arribo(nro)
 
-print('Datos cola vocales')
-while (not cvocales.cola_vacia()) :
-    dato = cvocales.atencion()
-    print(dato)
+cola_Aux=Cola()
 
+while (not miCola.cola_vacia()):
+    nro=miCola.atencion()
+    cola_Aux.arribo(nro)
 
+print(cola_Aux.que_tamanio())
 
